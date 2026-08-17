@@ -1,0 +1,63 @@
+# Replace these placeholders with the two real GitHub usernames before enabling
+# "Require review from Code Owners".
+
+/.github/ @MEMBER_A_GITHUB
+/README.md @MEMBER_A_GITHUB
+/.env.example @MEMBER_A_GITHUB
+/compose.yaml @MEMBER_A_GITHUB
+/infra/ @MEMBER_A_GITHUB
+
+/backend/app/main.py @MEMBER_A_GITHUB
+/backend/app/api/router.py @MEMBER_A_GITHUB
+/backend/app/api/health.py @MEMBER_A_GITHUB
+/backend/app/api/routes_a.py @MEMBER_A_GITHUB
+/backend/app/api/routes_b.py @MEMBER_B_GITHUB
+/backend/app/core/database.py @MEMBER_A_GITHUB
+/backend/app/core/settings/base.py @MEMBER_A_GITHUB
+/backend/app/core/settings/business.py @MEMBER_A_GITHUB
+/backend/app/core/settings/ai.py @MEMBER_B_GITHUB
+
+/backend/app/contracts/common.py @MEMBER_A_GITHUB
+/backend/app/contracts/events.py @MEMBER_A_GITHUB
+/backend/app/contracts/procurement.py @MEMBER_A_GITHUB
+/backend/app/contracts/order.py @MEMBER_A_GITHUB
+/backend/app/contracts/receiving.py @MEMBER_A_GITHUB
+/backend/app/contracts/supplier.py @MEMBER_B_GITHUB
+/backend/app/contracts/sourcing.py @MEMBER_B_GITHUB
+/backend/app/contracts/agent.py @MEMBER_B_GITHUB
+
+/backend/app/modules/identity/ @MEMBER_A_GITHUB
+/backend/app/modules/organizations/ @MEMBER_A_GITHUB
+/backend/app/modules/master_data/ @MEMBER_A_GITHUB
+/backend/app/modules/procurement/ @MEMBER_A_GITHUB
+/backend/app/modules/approval/ @MEMBER_A_GITHUB
+/backend/app/modules/orders/ @MEMBER_A_GITHUB
+/backend/app/modules/receiving/ @MEMBER_A_GITHUB
+/backend/app/modules/inventory/ @MEMBER_A_GITHUB
+/backend/app/modules/invoices/ @MEMBER_A_GITHUB
+/backend/app/modules/audit/ @MEMBER_A_GITHUB
+
+/backend/app/modules/suppliers/ @MEMBER_B_GITHUB
+/backend/app/modules/sourcing/ @MEMBER_B_GITHUB
+/backend/app/modules/agents/ @MEMBER_B_GITHUB
+/backend/app/modules/tools/ @MEMBER_B_GITHUB
+/backend/app/modules/rag/ @MEMBER_B_GITHUB
+/backend/app/modules/risk/ @MEMBER_B_GITHUB
+/backend/app/modules/reporting/ @MEMBER_B_GITHUB
+/backend/app/worker/ @MEMBER_B_GITHUB
+
+/backend/alembic/ @MEMBER_A_GITHUB
+/backend/alembic.ini @MEMBER_A_GITHUB
+/requirements/base.in @MEMBER_A_GITHUB
+/requirements/member-a.in @MEMBER_A_GITHUB
+/requirements/member-b.in @MEMBER_B_GITHUB
+/requirements/dev.in @MEMBER_A_GITHUB
+/requirements/lock.txt @MEMBER_A_GITHUB
+
+/frontend/src/features/a/ @MEMBER_A_GITHUB
+/frontend/src/features/b/ @MEMBER_B_GITHUB
+/frontend/src/app/router/routes-a.ts @MEMBER_A_GITHUB
+/frontend/src/app/router/routes-b.ts @MEMBER_B_GITHUB
+/frontend/src/app/router/index.ts @MEMBER_A_GITHUB
+/frontend/package.json @MEMBER_A_GITHUB
+/frontend/package-lock.json @MEMBER_A_GITHUB
