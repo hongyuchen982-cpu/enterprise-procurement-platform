@@ -1,11 +1,9 @@
 from datetime import datetime
 from enum import StrEnum
-from typing import Any, Generic, Literal, TypeVar
+from typing import Any, Literal
 from uuid import UUID
 
 from pydantic import BaseModel, ConfigDict, Field
-
-T = TypeVar("T")
 
 
 class ContractModel(BaseModel):
@@ -18,7 +16,7 @@ class ResponseMeta(ContractModel):
     timestamp: datetime
 
 
-class ApiResponse(ContractModel, Generic[T]):
+class ApiResponse[T](ContractModel):
     success: Literal[True] = True
     data: T
     meta: ResponseMeta
@@ -54,7 +52,7 @@ class PageMeta(ContractModel):
     total_pages: int = Field(ge=0)
 
 
-class PageResponse(ContractModel, Generic[T]):
+class PageResponse[T](ContractModel):
     success: Literal[True] = True
     data: list[T]
     pagination: PageMeta

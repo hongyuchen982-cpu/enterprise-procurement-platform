@@ -15,7 +15,7 @@ class Base(DeclarativeBase):
     pass
 
 
-def get_session() -> Generator[Session, None, None]:
+def get_session() -> Generator[Session]:
     session = SessionFactory()
     try:
         yield session
@@ -24,7 +24,7 @@ def get_session() -> Generator[Session, None, None]:
 
 
 @contextmanager
-def session_scope() -> Generator[Session, None, None]:
+def session_scope() -> Generator[Session]:
     session = SessionFactory()
     try:
         yield session
