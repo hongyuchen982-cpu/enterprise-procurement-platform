@@ -1,0 +1,51 @@
+:root {
+  color: #1f2937;
+  background: #f4f6f8;
+  font-family: Inter, "Microsoft YaHei", system-ui, sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+.app-shell {
+  min-height: 100vh;
+}
+
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.phase {
+  margin-left: 12px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+.page-card {
+  max-width: 1080px;
+  margin: 24px auto;
+}
+
+.page-card h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

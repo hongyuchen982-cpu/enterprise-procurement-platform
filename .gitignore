@@ -18,6 +18,7 @@ htmlcov/
 node_modules/
 dist/
 coverage/
+*.tsbuildinfo
 
 # IDE and OS
 .idea/
@@ -28,6 +29,7 @@ Thumbs.db
 # Runtime
 *.log
 tmp/
+.tmp/
 uploads/
 
 # Docker local overrides

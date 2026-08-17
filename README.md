@@ -25,4 +25,15 @@
 - `feature/a-*`, `feature/b-*`: feature work.
 - `fix/a-*`, `fix/b-*`: fixes.
 
-Local setup and verification commands will be documented in [local setup](docs/development/local-setup.md) as the skeleton is added.
+## Start locally
+
+1. Copy `.env.example` to `.env` and replace the local-only placeholder secrets.
+2. Run `docker compose up --build -d`.
+3. Run `docker compose ps` and wait until the services are healthy.
+4. Open the frontend at `http://localhost:5173`.
+
+API liveness is exposed at `GET http://localhost:8000/health/live`; readiness is at
+`GET http://localhost:8000/health/ready`. RabbitMQ management, MinIO console, and the
+worker health endpoint use ports `15672`, `9001`, and `8001` respectively.
+
+See [local setup](docs/development/local-setup.md) for verification commands.

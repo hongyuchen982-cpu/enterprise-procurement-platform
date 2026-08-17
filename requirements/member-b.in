@@ -1,0 +1,4 @@
+-r base.in
+aio-pika>=9.5,<10
+minio>=7.2,<8
+qdrant-client>=1.13,<2
