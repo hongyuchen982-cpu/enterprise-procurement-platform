@@ -44,3 +44,14 @@ class SupplierSnapshot(ContractModel):
     is_frozen: bool
     version: int = Field(ge=1)
     updated_at: datetime
+
+
+class SupplierSummary(ContractModel):
+    schema_version: Literal["1"] = "1"
+    supplier_id: UUID
+    legal_name: str
+    status: SupplierStatus
+    qualification_status: QualificationStatus
+    risk_level: RiskLevel
+    is_frozen: bool
+    updated_at: datetime
