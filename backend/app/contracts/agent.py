@@ -54,6 +54,14 @@ class AgentTask(ContractModel):
     error_code: str | None = None
 
 
+class AgentTaskCreate(ContractModel):
+    agent_type: str
+    org_id: UUID
+    requested_by: UUID
+    goal: str = Field(min_length=1, max_length=2000)
+    subject_refs: list[BusinessObjectRef] = Field(default_factory=list)
+
+
 class ToolDefinition(ContractModel):
     name: str
     version: str
