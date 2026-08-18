@@ -100,7 +100,5 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    op.drop_index(op.f("ix_iam_auth_sessions_user_id"), table_name="iam_auth_sessions")
-    op.drop_index(op.f("ix_iam_auth_sessions_expires_at"), table_name="iam_auth_sessions")
     op.drop_table("iam_auth_sessions")
     op.drop_table("iam_user_credentials")

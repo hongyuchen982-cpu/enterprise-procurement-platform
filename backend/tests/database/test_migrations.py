@@ -15,7 +15,7 @@ REPOSITORY_ROOT = BACKEND_ROOT.parent
 ALEMBIC_CONFIG = BACKEND_ROOT / "alembic.ini"
 
 
-def _run_alembic(database_url: str, *arguments: str) -> None:
+def _alembic_environment(database_url: str) -> dict[str, str]:
     allowed_environment = {
         "HOME",
         "LANG",
@@ -31,15 +31,32 @@ def _run_alembic(database_url: str, *arguments: str) -> None:
     }
     environment["DATABASE_URL"] = database_url
     environment["PYTHONUTF8"] = "1"
+    return environment
+
+
+def _run_alembic(database_url: str, *arguments: str) -> None:
     result = subprocess.run(
         [sys.executable, "-m", "alembic", *arguments],
         cwd=BACKEND_ROOT,
-        env=environment,
+        env=_alembic_environment(database_url),
         check=False,
         capture_output=True,
         text=True,
     )
     assert result.returncode == 0, result.stdout + result.stderr
+
+
+def _render_alembic_sql(database_url: str, *arguments: str) -> str:
+    result = subprocess.run(
+        [sys.executable, "-m", "alembic", *arguments, "--sql"],
+        cwd=BACKEND_ROOT,
+        env=_alembic_environment(database_url),
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
+    return result.stdout
 
 
 def test_model_registry_contains_identity_tables() -> None:
@@ -62,6 +79,19 @@ def test_model_registry_contains_identity_tables() -> None:
 def test_migration_graph_has_exactly_one_head() -> None:
     script = ScriptDirectory.from_config(Config(ALEMBIC_CONFIG))
     assert script.get_heads() == ["0003_authentication"]
+
+
+def test_mysql_downgrade_drops_tables_without_dropping_fk_indexes_first() -> None:
+    sql = _render_alembic_sql(
+        "mysql+pymysql://procurement:password@localhost/procurement",
+        "downgrade",
+        "0003_authentication:base",
+    )
+
+    assert "DROP INDEX" not in sql
+    assert sql.index("DROP TABLE iam_auth_sessions") < sql.index("DROP TABLE iam_user_credentials")
+    assert sql.index("DROP TABLE iam_memberships") < sql.index("DROP TABLE iam_users")
+    assert sql.index("DROP TABLE iam_users") < sql.index("DROP TABLE iam_organizations")
 
 
 def test_migrations_upgrade_downgrade_and_match_metadata() -> None:

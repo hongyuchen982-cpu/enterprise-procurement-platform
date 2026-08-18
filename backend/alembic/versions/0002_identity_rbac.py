@@ -259,18 +259,11 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    op.drop_index("ix_iam_role_scope_grants_scope_ref", table_name="iam_role_scope_grants")
-    op.drop_index("ix_iam_role_scope_grants_role_id", table_name="iam_role_scope_grants")
     op.drop_table("iam_role_scope_grants")
     op.drop_table("iam_role_permissions")
     op.drop_table("iam_membership_roles")
-    op.drop_index("ix_iam_roles_organization_id", table_name="iam_roles")
     op.drop_table("iam_roles")
     op.drop_table("iam_permissions")
-    op.drop_index("ix_iam_memberships_user_id", table_name="iam_memberships")
-    op.drop_index("ix_iam_memberships_organization_id", table_name="iam_memberships")
-    op.drop_index("ix_iam_memberships_department_id", table_name="iam_memberships")
     op.drop_table("iam_memberships")
     op.drop_table("iam_users")
-    op.drop_index("ix_iam_organizations_parent_id", table_name="iam_organizations")
     op.drop_table("iam_organizations")
