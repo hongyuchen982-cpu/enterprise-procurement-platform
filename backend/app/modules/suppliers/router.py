@@ -24,9 +24,7 @@ async def list_suppliers(request: Request) -> ApiResponse[list[SupplierSummary]]
 
 
 @router.get("/{supplier_id}/snapshot", response_model=ApiResponse[SupplierSnapshot])
-async def supplier_snapshot(
-    supplier_id: UUID, request: Request
-) -> ApiResponse[SupplierSnapshot]:
+async def supplier_snapshot(supplier_id: UUID, request: Request) -> ApiResponse[SupplierSnapshot]:
     snapshot = get_supplier_snapshot(supplier_id)
     if snapshot is None:
         raise HTTPException(

@@ -11,7 +11,9 @@ const deliveryItems = [
 <template>
   <section class="b-dashboard">
     <div class="b-dashboard__header">
-      <p class="eyebrow">Member B Workspace</p>
+      <p class="eyebrow">
+        Member B Workspace
+      </p>
       <h1>Suppliers, sourcing, and AI collaboration</h1>
       <p>
         This area is owned by Member B and integrates with Member A only through
@@ -20,14 +22,32 @@ const deliveryItems = [
     </div>
 
     <el-row :gutter="16">
-      <el-col :xs="24" :md="8">
-        <el-statistic title="Supplier APIs" value="2" />
+      <el-col
+        :xs="24"
+        :md="8"
+      >
+        <el-statistic
+          title="Supplier APIs"
+          value="2"
+        />
       </el-col>
-      <el-col :xs="24" :md="8">
-        <el-statistic title="Agent APIs" value="2" />
+      <el-col
+        :xs="24"
+        :md="8"
+      >
+        <el-statistic
+          title="Agent APIs"
+          value="2"
+        />
       </el-col>
-      <el-col :xs="24" :md="8">
-        <el-statistic title="Registered tools" value="2" />
+      <el-col
+        :xs="24"
+        :md="8"
+      >
+        <el-statistic
+          title="Registered tools"
+          value="2"
+        />
       </el-col>
     </el-row>
 
@@ -35,7 +55,9 @@ const deliveryItems = [
       <template #header>
         <div class="card-header">
           <span>Delivery sequence</span>
-          <el-tag type="success">feature/b-supplier-ai</el-tag>
+          <el-tag type="success">
+            feature/b-supplier-ai
+          </el-tag>
         </div>
       </template>
       <el-timeline>

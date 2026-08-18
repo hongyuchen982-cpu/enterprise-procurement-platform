@@ -19,9 +19,7 @@ def _response_meta(request: Request) -> ResponseMeta:
 
 
 @router.post("", response_model=ApiResponse[AgentTask], status_code=status.HTTP_202_ACCEPTED)
-async def submit_agent_task(
-    command: AgentTaskCreate, request: Request
-) -> ApiResponse[AgentTask]:
+async def submit_agent_task(command: AgentTaskCreate, request: Request) -> ApiResponse[AgentTask]:
     task = create_agent_task(command, trace_id=request.state.trace_id)
     return ApiResponse(data=task, meta=_response_meta(request))
 
