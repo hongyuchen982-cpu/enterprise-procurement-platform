@@ -1,5 +1,7 @@
 # Local setup
 
+For schema changes and the A/B migration handoff, see [Database migrations](migrations.md).
+
 ## Start the stack
 
 1. Copy `.env.example` to `.env`.

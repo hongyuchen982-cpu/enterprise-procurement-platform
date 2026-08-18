@@ -57,7 +57,7 @@ def _check_minio() -> DependencyStatus:
         client = Minio(
             settings.minio_endpoint,
             access_key=settings.minio_root_user,
-            secret_key=settings.minio_root_password,
+            secret_key=settings.minio_root_password.get_secret_value(),
             secure=settings.minio_secure,
         )
         client.list_buckets()

@@ -5,9 +5,17 @@ on:
   push:
     branches: [main, develop]
 
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   backend:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     services:
       mysql:
         image: mysql:8.4
@@ -36,10 +44,15 @@ jobs:
           python-version: "3.13"
           cache: pip
           cache-dependency-path: requirements/lock.txt
+      - name: Validate pull-request branch flow
+        if: github.event_name == 'pull_request'
+        run: >-
+          python .github/scripts/validate_branch_flow.py
+          "${{ github.base_ref }}" "${{ github.head_ref }}"
       - run: python -m pip install -r requirements/lock.txt
-      - run: ruff check backend
-      - run: ruff format --check backend
-      - run: pytest
+      - run: python -m ruff check backend .github/scripts
+      - run: python -m ruff format --check backend .github/scripts
+      - run: python -m pytest
         working-directory: backend
       - run: alembic upgrade head
         working-directory: backend
@@ -47,9 +60,12 @@ jobs:
         working-directory: backend
       - run: alembic upgrade head
         working-directory: backend
+      - run: alembic check
+        working-directory: backend
 
   frontend:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -68,6 +84,7 @@ jobs:
 
   compose-config:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - run: cp .env.example .env
