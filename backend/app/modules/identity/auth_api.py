@@ -1,8 +1,9 @@
 from dataclasses import dataclass, field
 from datetime import UTC, datetime
 from typing import Annotated
+from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, Header, HTTPException, Request, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
 
@@ -12,6 +13,7 @@ from app.contracts.auth import (
     LoginRequest,
     LoginResult,
     LogoutResult,
+    MembershipContext,
 )
 from app.contracts.common import ApiResponse, ResponseMeta
 from app.core.database import get_session
@@ -58,6 +60,26 @@ def get_authentication_context(
     except InvalidCredentialsError as exc:
         raise _unauthorized() from exc
     return AuthenticationContext(raw_token=credentials.credentials, user=user)
+
+
+def get_membership_context(
+    membership_id: Annotated[UUID, Header(alias="X-Membership-ID")],
+    context: Annotated[AuthenticationContext, Depends(get_authentication_context)],
+) -> MembershipContext:
+    membership = next(
+        (
+            candidate
+            for candidate in context.user.memberships
+            if candidate.membership_id == membership_id
+        ),
+        None,
+    )
+    if membership is None:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="membership does not belong to the authenticated user",
+        )
+    return membership
 
 
 @router.post("/login", response_model=ApiResponse[LoginResult])

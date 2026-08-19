@@ -2,5 +2,6 @@
 
 from app.modules.identity import auth_models as identity_auth_models
 from app.modules.identity import models as identity_models
+from app.modules.master_data import models as master_data_models
 
-__all__ = ["identity_auth_models", "identity_models"]
+__all__ = ["identity_auth_models", "identity_models", "master_data_models"]

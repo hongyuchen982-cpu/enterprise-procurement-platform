@@ -32,6 +32,8 @@ def test_member_entrypoints_and_contracts_have_expected_owners() -> None:
         "/backend/app/api/routes_a.py": A_OWNER,
         "/backend/app/api/routes_b.py": B_OWNER,
         "/backend/app/contracts/identity.py": A_OWNER,
+        "/backend/app/contracts/organizations.py": A_OWNER,
+        "/backend/app/contracts/master_data.py": A_OWNER,
         "/backend/app/contracts/procurement.py": A_OWNER,
         "/backend/app/contracts/supplier.py": B_OWNER,
         "/backend/app/contracts/sourcing.py": B_OWNER,

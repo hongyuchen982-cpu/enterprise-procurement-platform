@@ -36,6 +36,58 @@ class IdentityRepository:
         )
         return self.session.scalar(statement)
 
+    def organization(self, organization_id: UUID) -> Organization | None:
+        return self.session.scalar(
+            select(Organization).where(
+                Organization.id == organization_id,
+                Organization.deleted_at.is_(None),
+            )
+        )
+
+    def organization_by_code(self, code: str) -> Organization | None:
+        return self.session.scalar(
+            select(Organization).where(
+                Organization.code == code,
+                Organization.deleted_at.is_(None),
+            )
+        )
+
+    def organization_children(self, parent_id: UUID) -> tuple[Organization, ...]:
+        statement = (
+            select(Organization)
+            .where(
+                Organization.parent_id == parent_id,
+                Organization.deleted_at.is_(None),
+            )
+            .order_by(Organization.code)
+        )
+        return tuple(self.session.scalars(statement))
+
+    def user(self, user_id: UUID) -> User | None:
+        return self.session.scalar(
+            select(User).where(User.id == user_id, User.deleted_at.is_(None))
+        )
+
+    def membership_for_user_and_organization(
+        self, user_id: UUID, organization_id: UUID
+    ) -> Membership | None:
+        return self.session.scalar(
+            select(Membership).where(
+                Membership.user_id == user_id,
+                Membership.organization_id == organization_id,
+                Membership.deleted_at.is_(None),
+            )
+        )
+
+    def add(self, value: Organization | Membership) -> None:
+        self.session.add(value)
+
+    def commit(self) -> None:
+        self.session.commit()
+
+    def rollback(self) -> None:
+        self.session.rollback()
+
     def permission_codes(self, membership_id: UUID) -> frozenset[str]:
         statement = (
             select(RolePermission.permission_code)

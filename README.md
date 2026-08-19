@@ -2,8 +2,8 @@
 
 企业采购与供应链智能协同平台，采用模块化单体架构，由两名成员按业务域纵向协作开发。
 
-当前仓库阶段：工程治理、数据库底座、身份认证和 IAM/RBAC 授权核心已实现。采购、
-供应商、寻源、订单、发票、RAG 和 Agent 业务逻辑尚未实现。
+当前仓库阶段：工程治理、数据库底座、身份认证、IAM/RBAC、组织树与采购主数据底座
+已实现。采购申请、审批、订单、收货、发票、寻源、RAG 和 Agent 完整业务链尚未实现。
 
 ## Frozen stack
 
@@ -18,6 +18,9 @@
 - Member A: identity, organizations, RBAC/Data Scope, master data, procurement, approval, orders, receiving, inventory-lite, invoices, audit.
 - Member B: suppliers, sourcing, agents, tools, RAG, risk, reporting, messaging/worker, object storage, vector store, LLM infrastructure.
 - Shared files always have one merge owner. See [ownership](docs/architecture/ownership.md).
+
+组织与采购主数据的边界、权限和 API 约定见
+[organization and master data](docs/architecture/organization-master-data.md)。
 
 ## Branches
 

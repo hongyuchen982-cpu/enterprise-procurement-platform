@@ -23,6 +23,8 @@
 /backend/app/contracts/common.py @hongyuchen982-cpu
 /backend/app/contracts/auth.py @hongyuchen982-cpu
 /backend/app/contracts/identity.py @hongyuchen982-cpu
+/backend/app/contracts/organizations.py @hongyuchen982-cpu
+/backend/app/contracts/master_data.py @hongyuchen982-cpu
 /backend/app/contracts/events.py @hongyuchen982-cpu
 /backend/app/contracts/procurement.py @hongyuchen982-cpu
 /backend/app/contracts/order.py @hongyuchen982-cpu

@@ -73,19 +73,22 @@ def test_model_registry_contains_identity_tables() -> None:
         "iam_role_scope_grants",
         "iam_user_credentials",
         "iam_auth_sessions",
+        "md_categories",
+        "md_units",
+        "md_materials",
     } <= set(Base.metadata.tables)
 
 
 def test_migration_graph_has_exactly_one_head() -> None:
     script = ScriptDirectory.from_config(Config(ALEMBIC_CONFIG))
-    assert script.get_heads() == ["0003_authentication"]
+    assert script.get_heads() == ["0004_organization_master_data"]
 
 
 def test_mysql_downgrade_drops_tables_without_dropping_fk_indexes_first() -> None:
     sql = _render_alembic_sql(
         "mysql+pymysql://procurement:password@localhost/procurement",
         "downgrade",
-        "0003_authentication:base",
+        "0004_organization_master_data:base",
     )
 
     assert "DROP INDEX" not in sql
@@ -112,6 +115,9 @@ def test_migrations_upgrade_downgrade_and_match_metadata() -> None:
         assert "iam_role_scope_grants" in tables
         assert "iam_user_credentials" in tables
         assert "iam_auth_sessions" in tables
+        assert "md_categories" in tables
+        assert "md_units" in tables
+        assert "md_materials" in tables
 
         _run_alembic(database_url, "downgrade", "base")
         engine = create_engine(database_url)
