@@ -9,6 +9,7 @@ from sqlalchemy.pool import StaticPool
 from app.contracts.identity import DataScopeType
 from app.core.database import Base, get_session
 from app.main import app
+from app.modules.identity.auth_service import AuthenticationService
 from app.modules.identity.models import (
     Membership,
     MembershipRole,
@@ -19,6 +20,8 @@ from app.modules.identity.models import (
     RoleScopeGrant,
     User,
 )
+
+PASSWORD = "correct horse battery staple"
 
 
 def test_access_evaluation_api_returns_contract_response() -> None:
@@ -47,15 +50,31 @@ def test_access_evaluation_api_returns_contract_response() -> None:
             ]
         )
         session.commit()
+        AuthenticationService(session).set_password(user_id, PASSWORD)
 
     def override_session() -> Generator[Session]:
         with Session(engine) as session:
             yield session
 
     app.dependency_overrides[get_session] = override_session
+    client = TestClient(app)
     try:
-        response = TestClient(app).post(
+        unauthenticated = client.post(
             "/api/v1/access/evaluate",
+            json={
+                "membership_id": str(membership_id),
+                "permission_code": "procurement.request.read",
+                "target": {"organization_id": str(organization_id)},
+            },
+        )
+        login = client.post(
+            "/api/v1/auth/login",
+            json={"login_name": "buyer", "password": PASSWORD},
+        )
+        token = login.json()["data"]["access_token"]
+        response = client.post(
+            "/api/v1/access/evaluate",
+            headers={"Authorization": f"Bearer {token}"},
             json={
                 "membership_id": str(membership_id),
                 "permission_code": "procurement.request.read",
@@ -65,6 +84,7 @@ def test_access_evaluation_api_returns_contract_response() -> None:
     finally:
         app.dependency_overrides.clear()
 
+    assert unauthenticated.status_code == 401
     assert response.status_code == 200
     assert response.json()["data"] == {
         "allowed": True,
