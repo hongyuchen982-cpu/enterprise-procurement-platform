@@ -1,5 +1,6 @@
 from functools import lru_cache
 
+from pydantic import SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -8,7 +9,7 @@ class BaseAppSettings(BaseSettings):
 
     app_env: str = "development"
     log_level: str = "INFO"
-    secret_key: str = "change-this-before-any-shared-deployment"
+    secret_key: SecretStr = SecretStr("change-this-before-any-shared-deployment")
     api_port: int = 8000
     worker_health_port: int = 8001
     cors_origins: str = "http://localhost:5173"

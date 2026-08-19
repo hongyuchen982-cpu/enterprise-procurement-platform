@@ -2,6 +2,7 @@ import ast
 from pathlib import Path
 
 MODULES_ROOT = Path(__file__).resolve().parents[2] / "app" / "modules"
+CONTRACTS_ROOT = Path(__file__).resolve().parents[2] / "app" / "contracts"
 RESTRICTED_AGENT_MODULES = {"agents", "tools", "rag"}
 FORBIDDEN_INTERNAL_PARTS = {"models", "repository"}
 
@@ -63,4 +64,13 @@ def test_agent_tool_and_rag_modules_do_not_import_database_or_repositories() -> 
             parts = set(imported.split("."))
             if imported == "app.core.database" or {"repository", "models"}.intersection(parts):
                 violations.append(f"{path}: Agent boundary violation {imported}")
+    assert not violations, "\n".join(violations)
+
+
+def test_contracts_do_not_import_business_modules() -> None:
+    violations: list[str] = []
+    for path in CONTRACTS_ROOT.glob("*.py"):
+        for imported in _imports(path):
+            if imported == "app.modules" or imported.startswith("app.modules."):
+                violations.append(f"{path}: contract depends on business module {imported}")
     assert not violations, "\n".join(violations)

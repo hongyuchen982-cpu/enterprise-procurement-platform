@@ -1,5 +1,8 @@
-# Replace these placeholders with the two real GitHub usernames before enabling
-# "Require review from Code Owners".
+# Default merge owner for shared and otherwise-unlisted repository files.
+# More-specific B ownership rules below override this default.
+# Each rule intentionally has one merge owner. See docs/development/git-workflow.md
+# before enabling GitHub's hard "Require review from Code Owners" setting.
+* @hongyuchen982-cpu
 
 /.github/ @hongyuchen982-cpu
 /README.md @hongyuchen982-cpu
@@ -18,6 +21,8 @@
 /backend/app/core/settings/ai.py @cannjin197-netizen
 
 /backend/app/contracts/common.py @hongyuchen982-cpu
+/backend/app/contracts/auth.py @hongyuchen982-cpu
+/backend/app/contracts/identity.py @hongyuchen982-cpu
 /backend/app/contracts/events.py @hongyuchen982-cpu
 /backend/app/contracts/procurement.py @hongyuchen982-cpu
 /backend/app/contracts/order.py @hongyuchen982-cpu
