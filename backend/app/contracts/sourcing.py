@@ -29,9 +29,28 @@ class SourcingProjectSnapshot(ContractModel):
     org_id: UUID
     procurement_request_id: UUID
     procurement_request_version: int = Field(ge=1)
+    title: str
+    category_id: UUID
+    candidate_supplier_ids: list[UUID]
+    created_by: UUID
     status: SourcingStatus
     version: int = Field(ge=1)
+    created_at: datetime
     updated_at: datetime
+
+
+class SourcingProjectCreate(ContractModel):
+    org_id: UUID
+    procurement_request_id: UUID
+    procurement_request_version: int = Field(ge=1)
+    title: str = Field(min_length=1, max_length=200)
+    category_id: UUID
+    candidate_supplier_ids: list[UUID] = Field(default_factory=list, max_length=20)
+    created_by: UUID
+
+
+class SourcingProjectStatusUpdate(ContractModel):
+    status: SourcingStatus
 
 
 class AwardSnapshot(ContractModel):

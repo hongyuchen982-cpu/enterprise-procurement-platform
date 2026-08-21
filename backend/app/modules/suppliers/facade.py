@@ -1,48 +1,57 @@
-from datetime import UTC, datetime
 from uuid import UUID
 
 from app.contracts.supplier import (
-    QualificationStatus,
     RiskLevel,
+    SupplierRiskReview,
+    SupplierRiskReviewCreate,
     SupplierSnapshot,
     SupplierStatus,
     SupplierSummary,
 )
+from app.modules.suppliers.service import (
+    create_supplier_risk_review as service_create_supplier_risk_review,
+)
+from app.modules.suppliers.service import (
+    get_latest_supplier_risk_review as service_get_latest_supplier_risk_review,
+)
+from app.modules.suppliers.service import (
+    get_supplier_snapshot as service_get_supplier_snapshot,
+)
+from app.modules.suppliers.service import (
+    list_supplier_risk_reviews as service_list_supplier_risk_reviews,
+)
+from app.modules.suppliers.service import (
+    list_supplier_summaries as service_list_supplier_summaries,
+)
 
-_SUPPLIER_ID = UUID("11111111-1111-4111-8111-111111111111")
-_ORG_ID = UUID("22222222-2222-4222-8222-222222222222")
-_CATEGORY_ID = UUID("33333333-3333-4333-8333-333333333333")
 
-_SNAPSHOTS: dict[UUID, SupplierSnapshot] = {
-    _SUPPLIER_ID: SupplierSnapshot(
-        supplier_id=_SUPPLIER_ID,
-        org_id=_ORG_ID,
-        legal_name="Demo Precision Manufacturing Co., Ltd.",
-        status=SupplierStatus.ACTIVE,
-        qualification_status=QualificationStatus.QUALIFIED,
-        category_ids=[_CATEGORY_ID],
-        risk_level=RiskLevel.LOW,
-        is_frozen=False,
-        version=1,
-        updated_at=datetime(2026, 8, 18, tzinfo=UTC),
+def list_supplier_summaries(
+    keyword: str | None = None,
+    risk_level: RiskLevel | None = None,
+    status: SupplierStatus | None = None,
+    high_risk_only: bool = False,
+) -> list[SupplierSummary]:
+    return service_list_supplier_summaries(
+        keyword=keyword,
+        risk_level=risk_level,
+        status=status,
+        high_risk_only=high_risk_only,
     )
-}
-
-
-def list_supplier_summaries() -> list[SupplierSummary]:
-    return [
-        SupplierSummary(
-            supplier_id=snapshot.supplier_id,
-            legal_name=snapshot.legal_name,
-            status=snapshot.status,
-            qualification_status=snapshot.qualification_status,
-            risk_level=snapshot.risk_level,
-            is_frozen=snapshot.is_frozen,
-            updated_at=snapshot.updated_at,
-        )
-        for snapshot in _SNAPSHOTS.values()
-    ]
 
 
 def get_supplier_snapshot(supplier_id: UUID) -> SupplierSnapshot | None:
-    return _SNAPSHOTS.get(supplier_id)
+    return service_get_supplier_snapshot(supplier_id)
+
+
+def create_supplier_risk_review(
+    supplier_id: UUID, command: SupplierRiskReviewCreate
+) -> SupplierRiskReview | None:
+    return service_create_supplier_risk_review(supplier_id, command)
+
+
+def get_latest_supplier_risk_review(supplier_id: UUID) -> SupplierRiskReview | None:
+    return service_get_latest_supplier_risk_review(supplier_id)
+
+
+def list_supplier_risk_reviews(supplier_id: UUID) -> list[SupplierRiskReview] | None:
+    return service_list_supplier_risk_reviews(supplier_id)
