@@ -76,19 +76,35 @@ def test_model_registry_contains_identity_tables() -> None:
         "md_categories",
         "md_units",
         "md_materials",
+        "procurement_requests",
+        "procurement_request_lines",
+        "approval_templates",
+        "approval_template_steps",
+        "approval_instances",
+        "approval_nodes",
+        "approval_actions",
+        "purchase_orders",
+        "purchase_order_lines",
+        "goods_receipts",
+        "goods_receipt_lines",
+        "supplier_invoices",
+        "supplier_invoice_lines",
+        "inventory_balances",
+        "inventory_movements",
+        "business_audit_log",
     } <= set(Base.metadata.tables)
 
 
 def test_migration_graph_has_exactly_one_head() -> None:
     script = ScriptDirectory.from_config(Config(ALEMBIC_CONFIG))
-    assert script.get_heads() == ["0004_organization_master_data"]
+    assert script.get_heads() == ["0010_inventory_audit"]
 
 
 def test_mysql_downgrade_drops_tables_without_dropping_fk_indexes_first() -> None:
     sql = _render_alembic_sql(
         "mysql+pymysql://procurement:password@localhost/procurement",
         "downgrade",
-        "0004_organization_master_data:base",
+        "0006_approval_workflow:base",
     )
 
     assert "DROP INDEX" not in sql
@@ -118,6 +134,22 @@ def test_migrations_upgrade_downgrade_and_match_metadata() -> None:
         assert "md_categories" in tables
         assert "md_units" in tables
         assert "md_materials" in tables
+        assert "procurement_requests" in tables
+        assert "procurement_request_lines" in tables
+        assert "approval_templates" in tables
+        assert "approval_template_steps" in tables
+        assert "approval_instances" in tables
+        assert "approval_nodes" in tables
+        assert "approval_actions" in tables
+        assert "purchase_orders" in tables
+        assert "purchase_order_lines" in tables
+        assert "goods_receipts" in tables
+        assert "goods_receipt_lines" in tables
+        assert "supplier_invoices" in tables
+        assert "supplier_invoice_lines" in tables
+        assert "inventory_balances" in tables
+        assert "inventory_movements" in tables
+        assert "business_audit_log" in tables
 
         _run_alembic(database_url, "downgrade", "base")
         engine = create_engine(database_url)
