@@ -76,12 +76,20 @@ def test_model_registry_contains_identity_tables() -> None:
         "md_categories",
         "md_units",
         "md_materials",
+        "b_suppliers",
+        "b_supplier_risk_reviews",
+        "b_sourcing_projects",
+        "b_agent_tasks",
+        "b_agent_task_events",
+        "b_agent_confirmations",
+        "b_knowledge_documents",
+        "b_supplier_risk_assessments",
     } <= set(Base.metadata.tables)
 
 
 def test_migration_graph_has_exactly_one_head() -> None:
     script = ScriptDirectory.from_config(Config(ALEMBIC_CONFIG))
-    assert script.get_heads() == ["0004_organization_master_data"]
+    assert script.get_heads() == ["0006_b_rag_risk_foundation"]
 
 
 def test_mysql_downgrade_drops_tables_without_dropping_fk_indexes_first() -> None:
@@ -118,12 +126,18 @@ def test_migrations_upgrade_downgrade_and_match_metadata() -> None:
         assert "md_categories" in tables
         assert "md_units" in tables
         assert "md_materials" in tables
+        assert "b_suppliers" in tables
+        assert "b_sourcing_projects" in tables
+        assert "b_agent_tasks" in tables
+        assert "b_knowledge_documents" in tables
+        assert "b_supplier_risk_assessments" in tables
 
         _run_alembic(database_url, "downgrade", "base")
         engine = create_engine(database_url)
         tables_after_downgrade = set(inspect(engine).get_table_names())
         engine.dispose()
         assert not any(table.startswith("iam_") for table in tables_after_downgrade)
+        assert not any(table.startswith("b_") for table in tables_after_downgrade)
 
         _run_alembic(database_url, "upgrade", "head")
     finally:

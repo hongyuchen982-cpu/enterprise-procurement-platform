@@ -10,6 +10,7 @@ COPY requirements/lock.txt /workspace/requirements/lock.txt
 RUN python -m pip install --upgrade pip && \
     python -m pip install -r /workspace/requirements/lock.txt
 
+COPY .github /workspace/.github
 COPY backend /workspace/backend
 WORKDIR /workspace/backend
 

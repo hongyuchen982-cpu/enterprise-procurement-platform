@@ -62,6 +62,27 @@ class AgentTaskCreate(ContractModel):
     subject_refs: list[BusinessObjectRef] = Field(default_factory=list)
 
 
+class AgentTaskStatusUpdate(ContractModel):
+    status: AgentTaskStatus
+    error_code: str | None = Field(default=None, max_length=80)
+
+
+class ConfirmationRequestDecision(ContractModel):
+    status: ConfirmationStatus
+    confirmed_by: UUID | None = None
+    rejection_reason: str | None = Field(default=None, max_length=500)
+
+
+class AgentTaskEvent(ContractModel):
+    event_id: UUID
+    task_id: UUID
+    event_type: str
+    from_status: AgentTaskStatus | None = None
+    to_status: AgentTaskStatus
+    message: str
+    created_at: datetime
+
+
 class ToolDefinition(ContractModel):
     name: str
     version: str
