@@ -115,6 +115,22 @@ class OrganizationService:
             version=membership.version,
         )
 
+    def membership(self, membership_id: UUID) -> MembershipSnapshot:
+        membership = self.repository.get_active_membership(membership_id)
+        if membership is None:
+            raise MembershipNotActiveError(str(membership_id))
+        return MembershipSnapshot(
+            membership_id=membership.id,
+            user_id=membership.user_id,
+            organization_id=membership.organization_id,
+            department_id=membership.department_id,
+            status=OrganizationStatus(membership.status),
+            version=membership.version,
+        )
+
+    def is_descendant_or_self(self, organization_id: UUID, ancestor_id: UUID) -> bool:
+        return self.repository.is_descendant_or_self(organization_id, ancestor_id)
+
     def _tree_node(self, organization: Organization, visited: set[UUID]) -> OrganizationTreeNode:
         if organization.id in visited:
             raise InvalidOrganizationRelationshipError("organization hierarchy contains a cycle")

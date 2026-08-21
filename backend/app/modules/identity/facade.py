@@ -41,3 +41,9 @@ class IdentityFacade:
 
     def create_membership(self, payload: MembershipCreate) -> MembershipSnapshot:
         return self.organizations.create_membership(payload)
+
+    def membership(self, membership_id: UUID) -> MembershipSnapshot:
+        return self.organizations.membership(membership_id)
+
+    def is_descendant_or_self(self, organization_id: UUID, ancestor_id: UUID) -> bool:
+        return self.organizations.is_descendant_or_self(organization_id, ancestor_id)

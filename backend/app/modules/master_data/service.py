@@ -58,6 +58,12 @@ class MasterDataService:
             for category in self.repository.categories(organization_id)
         )
 
+    def category(self, category_id: UUID) -> CategorySnapshot:
+        category = self.repository.category(category_id)
+        if category is None:
+            raise MasterDataNotFoundError(str(category_id))
+        return self._category_snapshot(category)
+
     def create_unit(self, payload: UnitCreate) -> UnitSnapshot:
         code = payload.code.strip().upper()
         if self.repository.unit(code):
@@ -72,6 +78,12 @@ class MasterDataService:
 
     def list_units(self) -> tuple[UnitSnapshot, ...]:
         return tuple(self._unit_snapshot(unit) for unit in self.repository.units())
+
+    def unit(self, code: str) -> UnitSnapshot:
+        unit = self.repository.unit(code.strip().upper())
+        if unit is None:
+            raise MasterDataNotFoundError(code)
+        return self._unit_snapshot(unit)
 
     def create_material(self, payload: MaterialCreate) -> MaterialSnapshot:
         code = payload.code.strip().upper()
@@ -104,6 +116,12 @@ class MasterDataService:
             self._material_snapshot(material)
             for material in self.repository.materials(organization_id)
         )
+
+    def material(self, material_id: UUID) -> MaterialSnapshot:
+        material = self.repository.material(material_id)
+        if material is None:
+            raise MasterDataNotFoundError(str(material_id))
+        return self._material_snapshot(material)
 
     def _persist(self, value: Category | Unit | Material, conflict_message: str) -> None:
         self.repository.add(value)

@@ -52,6 +52,14 @@ class MasterDataRepository:
             )
         )
 
+    def material(self, material_id: UUID) -> Material | None:
+        return self.session.scalar(
+            select(Material).where(
+                Material.id == material_id,
+                Material.deleted_at.is_(None),
+            )
+        )
+
     def materials(self, organization_id: UUID) -> tuple[Material, ...]:
         statement = (
             select(Material)

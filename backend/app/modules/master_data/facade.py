@@ -30,11 +30,17 @@ class MasterDataFacade:
     def list_categories(self, organization_id: UUID) -> tuple[CategorySnapshot, ...]:
         return self.service.list_categories(organization_id)
 
+    def category(self, category_id: UUID) -> CategorySnapshot:
+        return self.service.category(category_id)
+
     def create_unit(self, payload: UnitCreate) -> UnitSnapshot:
         return self.service.create_unit(payload)
 
     def list_units(self) -> tuple[UnitSnapshot, ...]:
         return self.service.list_units()
+
+    def unit(self, code: str) -> UnitSnapshot:
+        return self.service.unit(code)
 
     def create_material(self, payload: MaterialCreate) -> MaterialSnapshot:
         self._require_active_organization(payload.organization_id)
@@ -42,6 +48,9 @@ class MasterDataFacade:
 
     def list_materials(self, organization_id: UUID) -> tuple[MaterialSnapshot, ...]:
         return self.service.list_materials(organization_id)
+
+    def material(self, material_id: UUID) -> MaterialSnapshot:
+        return self.service.material(material_id)
 
     def _require_active_organization(self, organization_id: UUID) -> None:
         try:
