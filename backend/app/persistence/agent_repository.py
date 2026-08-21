@@ -106,8 +106,7 @@ def _confirmation_from_record(record: AgentConfirmationRecord) -> ConfirmationRe
         proposed_action=record.proposed_action,
         target_refs=_refs_from_json(record.target_refs),
         target_versions={
-            UUID(str(object_id)): version
-            for object_id, version in record.target_versions.items()
+            UUID(str(object_id)): version for object_id, version in record.target_versions.items()
         },
         input_digest=record.input_digest,
         required_permission=record.required_permission,
@@ -130,8 +129,7 @@ def _confirmation_record_from_confirmation(
         proposed_action=confirmation.proposed_action,
         target_refs=_refs_to_json(confirmation.target_refs),
         target_versions={
-            str(object_id): version
-            for object_id, version in confirmation.target_versions.items()
+            str(object_id): version for object_id, version in confirmation.target_versions.items()
         },
         input_digest=confirmation.input_digest,
         required_permission=confirmation.required_permission,
@@ -146,9 +144,7 @@ def _confirmation_record_from_confirmation(
 def create_task(task: AgentTask, event: AgentTaskEvent) -> AgentTask:
     with session_scope() as session:
         latest_created_at = session.scalar(
-            select(AgentTaskRecord.created_at)
-            .order_by(AgentTaskRecord.created_at.desc())
-            .limit(1)
+            select(AgentTaskRecord.created_at).order_by(AgentTaskRecord.created_at.desc()).limit(1)
         )
         created_at = _next_persisted_second(task.created_at, latest_created_at)
         persisted_task = task.model_copy(
@@ -216,9 +212,7 @@ def list_tasks(
         statement = select(AgentTaskRecord)
         if task_status is not None:
             statement = statement.where(AgentTaskRecord.status == task_status.value)
-        records = session.scalars(
-            statement.order_by(AgentTaskRecord.created_at.desc())
-        ).all()
+        records = session.scalars(statement.order_by(AgentTaskRecord.created_at.desc())).all()
         tasks = [_task_from_record(record) for record in records]
 
     if subject_type is not None:
@@ -230,9 +224,7 @@ def list_tasks(
 
     if subject_id is not None:
         tasks = [
-            task
-            for task in tasks
-            if any(ref.object_id == subject_id for ref in task.subject_refs)
+            task for task in tasks if any(ref.object_id == subject_id for ref in task.subject_refs)
         ]
 
     if limit is not None:
@@ -261,9 +253,7 @@ def update_confirmation(confirmation: ConfirmationRequest) -> ConfirmationReques
         if record is None:
             return None
         record.status = confirmation.status.value
-        record.confirmed_by = (
-            str(confirmation.confirmed_by) if confirmation.confirmed_by else None
-        )
+        record.confirmed_by = str(confirmation.confirmed_by) if confirmation.confirmed_by else None
         record.confirmed_at = confirmation.confirmed_at
         record.rejection_reason = confirmation.rejection_reason
         return confirmation
@@ -277,9 +267,7 @@ def list_confirmations(
     with session_scope() as session:
         statement = select(AgentConfirmationRecord)
         if confirmation_status is not None:
-            statement = statement.where(
-                AgentConfirmationRecord.status == confirmation_status.value
-            )
+            statement = statement.where(AgentConfirmationRecord.status == confirmation_status.value)
         if task_id is not None:
             statement = statement.where(AgentConfirmationRecord.task_id == str(task_id))
         records = session.scalars(

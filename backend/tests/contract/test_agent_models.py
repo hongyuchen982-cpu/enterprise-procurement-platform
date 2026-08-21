@@ -56,9 +56,7 @@ def test_agent_orm_tables_have_expected_names_and_columns() -> None:
 def test_agent_orm_tables_keep_query_indexes() -> None:
     task_indexes = {index.name for index in AgentTaskRecord.__table__.indexes}
     event_indexes = {index.name for index in AgentTaskEventRecord.__table__.indexes}
-    confirmation_indexes = {
-        index.name for index in AgentConfirmationRecord.__table__.indexes
-    }
+    confirmation_indexes = {index.name for index in AgentConfirmationRecord.__table__.indexes}
 
     assert "ix_b_agent_tasks_org_status" in task_indexes
     assert "ix_b_agent_tasks_status_updated" in task_indexes

@@ -32,9 +32,7 @@ def _project(
         procurement_request_version=procurement_request_version,
         title=title,
         category_id=UUID(category_id),
-        candidate_supplier_ids=[
-            UUID(supplier_id) for supplier_id in candidate_supplier_ids
-        ],
+        candidate_supplier_ids=[UUID(supplier_id) for supplier_id in candidate_supplier_ids],
         created_by=_OPERATOR_ID,
         status=status,
         version=version,
@@ -100,9 +98,7 @@ def _record_from_snapshot(project: SourcingProjectSnapshot) -> SourcingProjectRe
         procurement_request_version=project.procurement_request_version,
         title=project.title,
         category_id=str(project.category_id),
-        candidate_supplier_ids=[
-            str(supplier_id) for supplier_id in project.candidate_supplier_ids
-        ],
+        candidate_supplier_ids=[str(supplier_id) for supplier_id in project.candidate_supplier_ids],
         created_by=str(project.created_by),
         status=project.status,
         version=project.version,
@@ -117,9 +113,7 @@ def list_projects(status: SourcingStatus | None = None) -> list[SourcingProjectS
         statement = select(SourcingProjectRecord)
         if status is not None:
             statement = statement.where(SourcingProjectRecord.status == status)
-        records = session.scalars(
-            statement.order_by(SourcingProjectRecord.updated_at.desc())
-        ).all()
+        records = session.scalars(statement.order_by(SourcingProjectRecord.updated_at.desc())).all()
         return [_snapshot_from_record(record) for record in records]
 
 

@@ -21,9 +21,7 @@ def _delete_agent_tasks(*task_ids: str) -> None:
         return
     with session_scope() as session:
         session.execute(
-            delete(AgentConfirmationRecord).where(
-                AgentConfirmationRecord.task_id.in_(task_ids)
-            )
+            delete(AgentConfirmationRecord).where(AgentConfirmationRecord.task_id.in_(task_ids))
         )
         session.execute(
             delete(AgentTaskEventRecord).where(AgentTaskEventRecord.task_id.in_(task_ids))
@@ -68,9 +66,10 @@ def test_supplier_list_can_filter_by_keyword_and_risk() -> None:
     assert all(item["status"] == "ACTIVE" for item in active_response.json()["data"])
 
     assert high_risk_response.status_code == 200
-    assert {
-        item["risk_level"] for item in high_risk_response.json()["data"]
-    } <= {"HIGH", "CRITICAL"}
+    assert {item["risk_level"] for item in high_risk_response.json()["data"]} <= {
+        "HIGH",
+        "CRITICAL",
+    }
 
 
 def test_supplier_risk_review_can_be_created_and_read_latest() -> None:
@@ -173,27 +172,21 @@ def test_agent_tasks_can_filter_by_subject_ref() -> None:
         "org_id": "22222222-2222-4222-8222-222222222222",
         "requested_by": "44444444-4444-4444-8444-444444444444",
         "goal": "Create a sourcing plan for the selected supplier.",
-        "subject_refs": [
-            {"object_type": "supplier", "object_id": supplier_id, "version": 1}
-        ],
+        "subject_refs": [{"object_type": "supplier", "object_id": supplier_id, "version": 1}],
     }
     second_command = {
         "agent_type": "supplier_risk_analyzer",
         "org_id": "22222222-2222-4222-8222-222222222222",
         "requested_by": "44444444-4444-4444-8444-444444444444",
         "goal": "Analyze supplier risk for the selected supplier.",
-        "subject_refs": [
-            {"object_type": "supplier", "object_id": supplier_id, "version": 1}
-        ],
+        "subject_refs": [{"object_type": "supplier", "object_id": supplier_id, "version": 1}],
     }
     unrelated_command = {
         "agent_type": "sourcing_assistant",
         "org_id": "22222222-2222-4222-8222-222222222222",
         "requested_by": "44444444-4444-4444-8444-444444444444",
         "goal": "Create a sourcing plan for another supplier.",
-        "subject_refs": [
-            {"object_type": "supplier", "object_id": other_supplier_id, "version": 1}
-        ],
+        "subject_refs": [{"object_type": "supplier", "object_id": other_supplier_id, "version": 1}],
     }
 
     with TestClient(app) as client:
@@ -268,9 +261,7 @@ def test_agent_task_status_can_be_updated() -> None:
     with TestClient(app) as client:
         created = client.post("/agent/tasks", json=command)
         task_id = created.json()["data"]["task_id"]
-        running = client.patch(
-            f"/agent/tasks/{task_id}/status", json={"status": "RUNNING"}
-        )
+        running = client.patch(f"/agent/tasks/{task_id}/status", json={"status": "RUNNING"})
         failed = client.patch(
             f"/agent/tasks/{task_id}/status",
             json={"status": "FAILED", "error_code": "DEMO_TOOL_TIMEOUT"},
@@ -305,15 +296,9 @@ def test_agent_task_rejects_invalid_status_transition() -> None:
     with TestClient(app) as client:
         created = client.post("/agent/tasks", json=command)
         task_id = created.json()["data"]["task_id"]
-        running = client.patch(
-            f"/agent/tasks/{task_id}/status", json={"status": "RUNNING"}
-        )
-        completed = client.patch(
-            f"/agent/tasks/{task_id}/status", json={"status": "COMPLETED"}
-        )
-        invalid = client.patch(
-            f"/agent/tasks/{task_id}/status", json={"status": "RUNNING"}
-        )
+        running = client.patch(f"/agent/tasks/{task_id}/status", json={"status": "RUNNING"})
+        completed = client.patch(f"/agent/tasks/{task_id}/status", json={"status": "COMPLETED"})
+        invalid = client.patch(f"/agent/tasks/{task_id}/status", json={"status": "RUNNING"})
         fetched = client.get(f"/agent/tasks/{task_id}")
 
     assert created.status_code == 202
@@ -368,9 +353,7 @@ def test_waiting_confirmation_creates_confirmation_request() -> None:
         "org_id": "22222222-2222-4222-8222-222222222222",
         "requested_by": "44444444-4444-4444-8444-444444444444",
         "goal": "Require human confirmation for a high-risk tool action.",
-        "subject_refs": [
-            {"object_type": "supplier", "object_id": supplier_id, "version": 3}
-        ],
+        "subject_refs": [{"object_type": "supplier", "object_id": supplier_id, "version": 3}],
     }
 
     with TestClient(app) as client:
@@ -381,19 +364,13 @@ def test_waiting_confirmation_creates_confirmation_request() -> None:
             f"/agent/tasks/{task_id}/status",
             json={"status": "WAITING_CONFIRMATION"},
         )
-        pending = client.get(
-            "/agent/confirmations", params={"confirmation_status": "PENDING"}
-        )
-        task_confirmations = client.get(
-            "/agent/confirmations", params={"task_id": task_id}
-        )
+        pending = client.get("/agent/confirmations", params={"confirmation_status": "PENDING"})
+        task_confirmations = client.get("/agent/confirmations", params={"task_id": task_id})
         limited_confirmations = client.get(
             "/agent/confirmations", params={"task_id": task_id, "limit": 1}
         )
         invalid_limit = client.get("/agent/confirmations", params={"limit": 0})
-        confirmation = next(
-            item for item in pending.json()["data"] if item["task_id"] == task_id
-        )
+        confirmation = next(item for item in pending.json()["data"] if item["task_id"] == task_id)
         fetched = client.get(f"/agent/confirmations/{confirmation['confirmation_id']}")
 
     assert created.status_code == 202
@@ -407,9 +384,7 @@ def test_waiting_confirmation_creates_confirmation_request() -> None:
     assert task_confirmations.status_code == 200
     assert [item["task_id"] for item in task_confirmations.json()["data"]] == [task_id]
     assert limited_confirmations.status_code == 200
-    assert [item["task_id"] for item in limited_confirmations.json()["data"]] == [
-        task_id
-    ]
+    assert [item["task_id"] for item in limited_confirmations.json()["data"]] == [task_id]
     assert invalid_limit.status_code == 422
     assert fetched.status_code == 200
     assert fetched.json()["data"]["confirmation_id"] == confirmation["confirmation_id"]
@@ -501,8 +476,7 @@ def test_confirmation_request_can_be_confirmed_or_rejected() -> None:
     assert rejected_events.status_code == 200
     assert rejected_events.json()["data"][0]["event_type"] == "CONFIRMATION_REJECTED"
     assert (
-        rejected_events.json()["data"][0]["message"]
-        == "Risk is not acceptable for demo approval."
+        rejected_events.json()["data"][0]["message"] == "Risk is not acceptable for demo approval."
     )
     _delete_agent_tasks(confirm_task_id, reject_task_id)
 
@@ -521,9 +495,7 @@ def test_sourcing_projects_can_be_listed_created_and_advanced() -> None:
 
     with TestClient(app) as client:
         listed = client.get("/sourcing/projects")
-        active = client.get(
-            "/sourcing/projects", params={"sourcing_status": "ACTIVE"}
-        )
+        active = client.get("/sourcing/projects", params={"sourcing_status": "ACTIVE"})
         created = client.post("/sourcing/projects", json=command)
         project_id = created.json()["data"]["sourcing_project_id"]
         fetched = client.get(f"/sourcing/projects/{project_id}")
@@ -534,12 +506,11 @@ def test_sourcing_projects_can_be_listed_created_and_advanced() -> None:
         awarded = client.patch(
             f"/sourcing/projects/{project_id}/status",
             json={"status": "AWARDED"},
-    )
+        )
 
     assert listed.status_code == 200
     assert any(
-        item["title"] == "Precision machining supplier shortlist"
-        for item in listed.json()["data"]
+        item["title"] == "Precision machining supplier shortlist" for item in listed.json()["data"]
     )
     assert active.status_code == 200
     assert all(item["status"] == "ACTIVE" for item in active.json()["data"])
@@ -741,9 +712,7 @@ def test_supplier_risk_assessments_can_be_listed_read_and_refreshed() -> None:
     assert listed_payload[0]["score"] >= listed_payload[-1]["score"]
 
     assert filtered.status_code == 200
-    assert [item["supplier_id"] for item in filtered.json()["data"]] == [
-        high_risk_supplier_id
-    ]
+    assert [item["supplier_id"] for item in filtered.json()["data"]] == [high_risk_supplier_id]
 
     assert fetched.status_code == 200
     fetched_payload = fetched.json()["data"]
@@ -767,8 +736,7 @@ def test_supplier_risk_assessments_can_be_listed_read_and_refreshed() -> None:
     with session_scope() as session:
         session.execute(
             delete(SupplierRiskAssessmentRecord).where(
-                SupplierRiskAssessmentRecord.assessment_id
-                == refreshed_payload["assessment_id"]
+                SupplierRiskAssessmentRecord.assessment_id == refreshed_payload["assessment_id"]
             )
         )
 

@@ -22,14 +22,10 @@ def list_supplier_summaries(
     snapshots = repository.list_snapshots()
     if normalized_keyword:
         snapshots = [
-            snapshot
-            for snapshot in snapshots
-            if normalized_keyword in snapshot.legal_name.lower()
+            snapshot for snapshot in snapshots if normalized_keyword in snapshot.legal_name.lower()
         ]
     if risk_level is not None:
-        snapshots = [
-            snapshot for snapshot in snapshots if snapshot.risk_level == risk_level
-        ]
+        snapshots = [snapshot for snapshot in snapshots if snapshot.risk_level == risk_level]
     if status is not None:
         snapshots = [snapshot for snapshot in snapshots if snapshot.status == status]
     if high_risk_only:

@@ -68,9 +68,7 @@ def _append_task_event(
 
 def _create_confirmation_request(task: AgentTask) -> ConfirmationRequest:
     target_versions = {
-        ref.object_id: ref.version
-        for ref in task.subject_refs
-        if ref.version is not None
+        ref.object_id: ref.version for ref in task.subject_refs if ref.version is not None
     }
     confirmation = ConfirmationRequest(
         confirmation_id=uuid4(),
@@ -117,9 +115,7 @@ def get_agent_task(task_id: UUID) -> AgentTask | None:
     return agent_repository.get_task(task_id)
 
 
-def update_agent_task_status(
-    task_id: UUID, command: AgentTaskStatusUpdate
-) -> AgentTask | None:
+def update_agent_task_status(task_id: UUID, command: AgentTaskStatusUpdate) -> AgentTask | None:
     task = get_agent_task(task_id)
     if task is None:
         return None

@@ -4,10 +4,10 @@ import sys
 from pathlib import Path
 from uuid import uuid4
 
-from sqlalchemy import create_engine, inspect
-
 from alembic.config import Config
 from alembic.script import ScriptDirectory
+from sqlalchemy import create_engine, inspect
+
 from app.core.database import Base
 
 BACKEND_ROOT = Path(__file__).resolve().parents[2]

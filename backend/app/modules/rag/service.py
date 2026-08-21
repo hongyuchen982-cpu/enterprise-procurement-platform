@@ -17,9 +17,7 @@ _ORG_ID = UUID("22222222-2222-4222-8222-222222222222")
 _OPERATOR_ID = UUID("44444444-4444-4444-8444-444444444444")
 _SEED_DOCUMENTS: list[tuple[KnowledgeDocumentSnapshot, str]] = []
 
-_ALLOWED_STATUS_TRANSITIONS: dict[
-    KnowledgeDocumentStatus, set[KnowledgeDocumentStatus]
-] = {
+_ALLOWED_STATUS_TRANSITIONS: dict[KnowledgeDocumentStatus, set[KnowledgeDocumentStatus]] = {
     KnowledgeDocumentStatus.UPLOADED: {
         KnowledgeDocumentStatus.INDEXING,
         KnowledgeDocumentStatus.ARCHIVED,
@@ -185,9 +183,7 @@ def update_knowledge_document_status(
         update={
             "status": command.status,
             "indexed_at": (
-                now
-                if command.status == KnowledgeDocumentStatus.INDEXED
-                else document.indexed_at
+                now if command.status == KnowledgeDocumentStatus.INDEXED else document.indexed_at
             ),
             "version": document.version + 1,
             "updated_at": now,

@@ -72,10 +72,7 @@ def list_latest_assessments() -> list[SupplierRiskAssessment]:
         latest_by_supplier: dict[str, SupplierRiskAssessmentRecord] = {}
         for record in records:
             latest_by_supplier.setdefault(str(record.supplier_id), record)
-        return [
-            _assessment_from_record(record)
-            for record in latest_by_supplier.values()
-        ]
+        return [_assessment_from_record(record) for record in latest_by_supplier.values()]
 
 
 def append_assessment(
