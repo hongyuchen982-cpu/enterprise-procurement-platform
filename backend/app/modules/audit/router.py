@@ -2,7 +2,7 @@ from datetime import UTC, datetime
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from sqlalchemy.orm import Session
 
 from app.contracts.audit import AuditEntrySnapshot
@@ -34,6 +34,8 @@ def list_audit_entries(
     object_type: str | None = None,
     object_id: UUID | None = None,
     action: str | None = None,
+    limit: Annotated[int, Query(ge=1, le=200)] = 100,
+    offset: Annotated[int, Query(ge=0)] = 0,
 ) -> ApiResponse[list[AuditEntrySnapshot]]:
     decision = IdentityFacade(session).evaluate(
         membership.membership_id,
@@ -51,6 +53,8 @@ def list_audit_entries(
             object_type,
             object_id,
             action,
+            limit,
+            offset,
         )
     )
     return ApiResponse(data=values, meta=_meta(request))

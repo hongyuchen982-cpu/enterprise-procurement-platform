@@ -2,7 +2,7 @@ from datetime import UTC, datetime
 from typing import Annotated
 from uuid import UUID
 
-from fastapi import APIRouter, Depends, Request
+from fastapi import APIRouter, Depends, Query, Request
 from sqlalchemy.orm import Session
 
 from app.contracts.auth import MembershipContext
@@ -72,10 +72,17 @@ def list_movements(
     membership: Annotated[MembershipContext, Depends(get_membership_context)],
     session: Annotated[Session, Depends(get_session)],
     material_id: UUID | None = None,
+    limit: Annotated[int, Query(ge=1, le=200)] = 100,
+    offset: Annotated[int, Query(ge=0)] = 0,
 ) -> ApiResponse[list[InventoryMovementSnapshot]]:
     values = [
         value
-        for value in InventoryFacade(session).movements(organization_id, material_id)
+        for value in InventoryFacade(session).movements(
+            organization_id,
+            material_id,
+            limit,
+            offset,
+        )
         if _allowed(
             session,
             membership,

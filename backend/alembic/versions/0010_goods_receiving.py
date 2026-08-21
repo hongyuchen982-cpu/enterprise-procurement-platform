@@ -1,7 +1,7 @@
 """Goods receipt drafts, inspection, and purchase-order fulfillment.
 
-Revision ID: 0008_goods_receiving
-Revises: 0007_purchase_orders
+Revision ID: 0010_goods_receiving
+Revises: 0009_purchase_orders
 Create Date: 2026-08-20
 """
 
@@ -9,8 +9,8 @@ import sqlalchemy as sa
 
 from alembic import op
 
-revision = "0008_goods_receiving"
-down_revision = "0007_purchase_orders"
+revision = "0010_goods_receiving"
+down_revision = "0009_purchase_orders"
 branch_labels = None
 depends_on = None
 

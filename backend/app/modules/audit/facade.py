@@ -37,6 +37,8 @@ class AuditFacade:
         object_type: str | None = None,
         object_id: UUID | None = None,
         action: str | None = None,
+        limit: int = 100,
+        offset: int = 0,
     ) -> tuple[AuditEntrySnapshot, ...]:
         return tuple(
             AuditEntrySnapshot(
@@ -59,5 +61,7 @@ class AuditFacade:
                 object_type,
                 object_id,
                 action,
+                limit,
+                offset,
             )
         )

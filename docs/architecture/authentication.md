@@ -37,5 +37,6 @@ Available endpoints:
 - `POST /api/v1/auth/change-password`
 
 Bearer tokens must only be transported over HTTPS outside local development. Authentication
-events will be copied into the formal audit trail during the audit/event phase. Redis or edge
-rate limiting may supplement account lockout, but does not replace it.
+security events remain in the authentication subsystem; the formal accounting-impact audit trail
+does not duplicate them. Redis or edge rate limiting may supplement account lockout, but does not
+replace it.

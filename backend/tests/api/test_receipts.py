@@ -202,6 +202,17 @@ def test_receipt_api_create_complete_flow() -> None:
         movements = movements_response.json()["data"]
         assert len(movements) == 1
         assert movements[0]["source_id"] == created["receipt_id"]
+        movement_page_response = client.get(
+            f"/api/v1/inventory/movements?organization_id={organization.id}&limit=1&offset=1",
+            headers=headers,
+        )
+        assert movement_page_response.status_code == 200
+        assert movement_page_response.json()["data"] == []
+        invalid_movement_page = client.get(
+            f"/api/v1/inventory/movements?organization_id={organization.id}&limit=201",
+            headers=headers,
+        )
+        assert invalid_movement_page.status_code == 422
 
         audit_response = client.get(
             f"/api/v1/audit-log?organization_id={organization.id}&action=RECEIPT_COMPLETED",
@@ -211,6 +222,17 @@ def test_receipt_api_create_complete_flow() -> None:
         audit_entries = audit_response.json()["data"]
         assert len(audit_entries) == 1
         assert audit_entries[0]["object_id"] == created["receipt_id"]
+        audit_page_response = client.get(
+            f"/api/v1/audit-log?organization_id={organization.id}&limit=1&offset=1",
+            headers=headers,
+        )
+        assert audit_page_response.status_code == 200
+        assert audit_page_response.json()["data"] == []
+        invalid_audit_page = client.get(
+            f"/api/v1/audit-log?organization_id={organization.id}&limit=201",
+            headers=headers,
+        )
+        assert invalid_audit_page.status_code == 422
     finally:
         app.dependency_overrides.clear()
         engine.dispose()

@@ -28,6 +28,9 @@ function navigate(path: string): void {
         <el-menu-item index="/health">
           Health
         </el-menu-item>
+        <el-menu-item index="/b">
+          B 工作台
+        </el-menu-item>
       </el-menu>
     </el-header>
     <el-main>

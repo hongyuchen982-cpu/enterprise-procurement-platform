@@ -19,6 +19,8 @@ class AuditRepository:
         object_type: str | None = None,
         object_id: UUID | None = None,
         action: str | None = None,
+        limit: int = 100,
+        offset: int = 0,
     ) -> tuple[AuditEntry, ...]:
         statement = select(AuditEntry).where(AuditEntry.organization_id == organization_id)
         if object_type is not None:
@@ -30,5 +32,7 @@ class AuditRepository:
         return tuple(
             self.session.scalars(
                 statement.order_by(AuditEntry.occurred_at.desc(), AuditEntry.id.desc())
+                .limit(limit)
+                .offset(offset)
             )
         )

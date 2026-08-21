@@ -1,7 +1,7 @@
 """Approval templates, instances, nodes, and request transitions.
 
-Revision ID: 0006_approval_workflow
-Revises: 0005_procurement_requests
+Revision ID: 0008_approval_workflow
+Revises: 0007_procurement_requests
 Create Date: 2026-08-20
 """
 
@@ -9,8 +9,8 @@ import sqlalchemy as sa
 
 from alembic import op
 
-revision = "0006_approval_workflow"
-down_revision = "0005_procurement_requests"
+revision = "0008_approval_workflow"
+down_revision = "0007_procurement_requests"
 branch_labels = None
 depends_on = None
 

@@ -39,7 +39,7 @@ requires `expected_version` optimistic concurrency control.
 
 ## Permissions and data scope
 
-Migration `0007_purchase_orders` seeds:
+Migration `0009_purchase_orders` seeds:
 
 - `order.read`
 - `order.create`

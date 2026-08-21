@@ -85,10 +85,17 @@ class InventoryService:
         self,
         organization_id: UUID,
         material_id: UUID | None = None,
+        limit: int = 100,
+        offset: int = 0,
     ) -> tuple[InventoryMovementSnapshot, ...]:
         return tuple(
             self.movement_snapshot(value)
-            for value in self.repository.movements(organization_id, material_id)
+            for value in self.repository.movements(
+                organization_id,
+                material_id,
+                limit,
+                offset,
+            )
         )
 
     @staticmethod

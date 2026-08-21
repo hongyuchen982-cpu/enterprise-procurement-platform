@@ -1,7 +1,7 @@
 """Procurement request drafts and submission workflow.
 
-Revision ID: 0005_procurement_requests
-Revises: 0004_organization_master_data
+Revision ID: 0007_procurement_requests
+Revises: 0006_b_rag_risk_foundation
 Create Date: 2026-08-20
 """
 
@@ -9,8 +9,8 @@ import sqlalchemy as sa
 
 from alembic import op
 
-revision = "0005_procurement_requests"
-down_revision = "0004_organization_master_data"
+revision = "0007_procurement_requests"
+down_revision = "0006_b_rag_risk_foundation"
 branch_labels = None
 depends_on = None
 

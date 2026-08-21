@@ -38,7 +38,7 @@ request REJECTED                   request APPROVED
 
 ## Permissions
 
-Migration `0006_approval_workflow` seeds:
+Migration `0008_approval_workflow` seeds:
 
 - `approval.template.manage`
 - `approval.instance.start`

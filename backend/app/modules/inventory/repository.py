@@ -46,6 +46,8 @@ class InventoryRepository:
         self,
         organization_id: UUID,
         material_id: UUID | None = None,
+        limit: int = 100,
+        offset: int = 0,
     ) -> tuple[InventoryMovement, ...]:
         statement = select(InventoryMovement).where(
             InventoryMovement.organization_id == organization_id
@@ -58,6 +60,8 @@ class InventoryRepository:
                     InventoryMovement.occurred_at.desc(),
                     InventoryMovement.id.desc(),
                 )
+                .limit(limit)
+                .offset(offset)
             )
         )
 

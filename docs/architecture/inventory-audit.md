@@ -37,7 +37,7 @@ domain-specific evidence while providing one queryable accounting-impact trail.
 
 ## Permissions and APIs
 
-Migration `0010_inventory_audit` seeds `inventory.read` and `audit.read`.
+Migration `0012_inventory_audit` seeds `inventory.read` and `audit.read`.
 
 - `GET /api/v1/inventory/balances?organization_id=...`
 - `GET /api/v1/inventory/movements?organization_id=...&material_id=...`
@@ -45,6 +45,8 @@ Migration `0010_inventory_audit` seeds `inventory.read` and `audit.read`.
 
 Inventory queries apply organization and category data scope. Audit queries require organization
 scope and can filter by action or business object without exposing inaccessible organizations.
+Movement and audit-log queries accept `limit` (default `100`, maximum `200`) and `offset` so their
+append-only histories are never materialized without a bound.
 
 ## Final Member A acceptance
 

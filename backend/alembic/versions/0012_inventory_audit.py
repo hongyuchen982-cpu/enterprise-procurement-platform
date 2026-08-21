@@ -1,7 +1,7 @@
 """Inventory-lite receipt ledger and formal business audit log.
 
-Revision ID: 0010_inventory_audit
-Revises: 0009_invoice_matching
+Revision ID: 0012_inventory_audit
+Revises: 0011_invoice_matching
 Create Date: 2026-08-21
 """
 
@@ -9,8 +9,8 @@ import sqlalchemy as sa
 
 from alembic import op
 
-revision = "0010_inventory_audit"
-down_revision = "0009_invoice_matching"
+revision = "0012_inventory_audit"
+down_revision = "0011_invoice_matching"
 branch_labels = None
 depends_on = None
 

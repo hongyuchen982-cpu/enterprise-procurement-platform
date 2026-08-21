@@ -1,7 +1,7 @@
 """Purchase-order draft, issue, and cancellation lifecycle.
 
-Revision ID: 0007_purchase_orders
-Revises: 0006_approval_workflow
+Revision ID: 0009_purchase_orders
+Revises: 0008_approval_workflow
 Create Date: 2026-08-20
 """
 
@@ -9,8 +9,8 @@ import sqlalchemy as sa
 
 from alembic import op
 
-revision = "0007_purchase_orders"
-down_revision = "0006_approval_workflow"
+revision = "0009_purchase_orders"
+down_revision = "0008_approval_workflow"
 branch_labels = None
 depends_on = None
 

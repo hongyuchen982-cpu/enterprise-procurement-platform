@@ -34,7 +34,7 @@ DRAFT --submit--> SUBMITTED --start approval--> IN_APPROVAL
 
 ## Permissions and data scope
 
-Migration `0005_procurement_requests` seeds:
+Migration `0007_procurement_requests` seeds:
 
 - `procurement.request.read`
 - `procurement.request.create`

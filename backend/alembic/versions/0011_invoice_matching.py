@@ -1,7 +1,7 @@
 """Supplier invoices and three-way matching.
 
-Revision ID: 0009_invoice_matching
-Revises: 0008_goods_receiving
+Revision ID: 0011_invoice_matching
+Revises: 0010_goods_receiving
 Create Date: 2026-08-20
 """
 
@@ -9,8 +9,8 @@ import sqlalchemy as sa
 
 from alembic import op
 
-revision = "0009_invoice_matching"
-down_revision = "0008_goods_receiving"
+revision = "0011_invoice_matching"
+down_revision = "0010_goods_receiving"
 branch_labels = None
 depends_on = None
 

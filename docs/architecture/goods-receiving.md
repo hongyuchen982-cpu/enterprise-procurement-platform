@@ -34,7 +34,7 @@ exceed ordered quantity on MySQL.
 ## Identity, permissions, and data scope
 
 Every receipt records the authenticated receiver membership and user. The membership must be
-active, belong to the user, and match the order organization. Migration `0008_goods_receiving`
+active, belong to the user, and match the order organization. Migration `0010_goods_receiving`
 seeds:
 
 - `receipt.read`

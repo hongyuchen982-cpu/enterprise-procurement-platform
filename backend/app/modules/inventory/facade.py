@@ -25,5 +25,7 @@ class InventoryFacade:
         self,
         organization_id: UUID,
         material_id: UUID | None = None,
+        limit: int = 100,
+        offset: int = 0,
     ) -> tuple[InventoryMovementSnapshot, ...]:
-        return self.service.movements(organization_id, material_id)
+        return self.service.movements(organization_id, material_id, limit, offset)

@@ -45,7 +45,7 @@ invoice approval, so out-of-order exception processing still converges to the co
 
 ## Permissions, API, and persistence
 
-Migration `0009_invoice_matching` seeds `invoice.read`, `invoice.create`, `invoice.update`,
+Migration `0011_invoice_matching` seeds `invoice.read`, `invoice.create`, `invoice.update`,
 `invoice.submit`, `invoice.approve`, and `invoice.cancel`. Authorization follows the source
 procurement request's organization, department, owner, and categories.
 

@@ -52,9 +52,9 @@ jobs:
       - run: python -m pip install -r requirements/lock.txt
       - run: python -m ruff check backend .github/scripts
       - run: python -m ruff format --check backend .github/scripts
-      - run: python -m pytest
-        working-directory: backend
       - run: alembic upgrade head
+        working-directory: backend
+      - run: python -m pytest
         working-directory: backend
       - run: alembic downgrade base
         working-directory: backend
